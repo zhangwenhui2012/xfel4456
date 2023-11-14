@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --array=31,32
+#SBATCH --array=1
 #SBATCH --time=04:00:00
 #SBATCH --partition=upex
 ##SBATCH --reservation=upex_004456
@@ -14,7 +14,8 @@
 PREFIX=/gpfs/exfel/exp/SPB/202302/p004456
 
 source /etc/profile.d/modules.sh
-source ${PREFIX}/usr/Shared/amorgan/xfel3004/source_this_at_euxfel
+# Load modules and environment
+module load exfel exfel-python
 
 run=`printf %.4d "${SLURM_ARRAY_TASK_ID}"`
-extra-data-make-virtual-cxi ${PREFIX}/proc/r${run} -o ${PREFIX}/scratch/vds/r${run}.cxi
+extra-data-make-virtual-cxi ${PREFIX}/raw/r${run} -o ${PREFIX}/scratch/vds/r${run}.cxi
