@@ -17,8 +17,8 @@ Put any analysis files (bigger than a few megabytes) in /scratch:
 
 
 ## analysis goals:
-- [x] VDS: virtual h5 files that put all module data into a single cxi file.
-    - use ```offline/slurm/vds_array_test.sh``` for testing
+- [x] VDS: virtual h5 files that put all processed module data into a single cxi file.
+    - ```offline/slurm/vds_array.sh``` (tested on run 5)
 - [ ] Generate powder pattern
 - [ ] Calculate number, location and intensity of streaks
 - [ ] Generate streakogram from above
