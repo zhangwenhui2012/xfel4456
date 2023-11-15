@@ -10,23 +10,14 @@ def single_streak_finder(
     img_array,
     thld=10,
     min_pix=15,
-    mask_file="None",
-    plotting=False,
-    interacting=False,
-    fig_filename="streak_finding.png",
+    mask = None,
+    bkg = 0,
     area_max_size=5e8,
 ):
     # start_time = time.time()
-    if mask_file != "None":
-        with h5py.File(os.path.abspath(mask_file), "r") as m:
-            mask = np.array(m["/data/data"]).astype(bool)
-            bkg = np.array(m["/data/bkg"])
-    elif mask_file == "None":
+    if mask is None : 
         mask = np.ones_like(img_array).astype(bool)
-        bkg = 0
-    else:
-        sys.exit("the mask file option is inproper.")
-
+    
     img_array_bgd_subtracted = img_array - bkg
     bimg_masked = (img_array_bgd_subtracted > thld) * mask
 
@@ -70,38 +61,10 @@ def single_streak_finder(
       
     # print('In image: %s \n %5d peaks are found' %(img_file_name, len(label_filtered_sorted)))
     # beam_center=np.array([1492.98,2163.41])
-
+    
     # weighted_centroid_filtered_end_timee = time.time()
     # print(f"weight timings {weighted_centroid_filtered_end_timee-weighted_centroid_filtered_start_time:.10f}")
-
-    if plotting:
-        plt.figure(figsize=(15, 15))
-        plt.imshow(img_array * (mask.astype(np.int16)), cmap="viridis", origin="upper")
-        plt.colorbar()
-        # plt.clim(0,0.5*thld)
-        plt.clim(0, 30)
-        # plt.xlim(250,2100)
-        # plt.ylim(500,2300)
-
-        for label in label_filtered_sorted:
-            plt.scatter(
-                props[label - 1].coords[:, 1], props[label - 1].coords[:, 0], s=0.5
-            )
-        plt.scatter(
-            weighted_centroid_filtered[:, 1],
-            weighted_centroid_filtered[:, 0],
-            edgecolors="r",
-            facecolors="none",
-        )
-
-        #    plt.scatter(beam_center[1],beam_center[0],marker='*',color='b')
-        #         title_Str=exp_img_file+'\nEvent: %d '%(frame_no)
-        #         plt.title(title_Str)
-        if interacting:
-            plt.show()
-        else:
-            plt.savefig(fig_filename)
-
+    
     # end_time = time.time()
     # print(f"full timing {end_time - start_time}")
     return (
@@ -111,3 +74,42 @@ def single_streak_finder(
         img_array,
         all_labels,
     )
+
+
+def plot_streaks(
+        label_filtered_sorted,
+        weighted_centroid_filtered,
+        props,
+        img_array,
+        all_labels,
+        interacting=False,
+        fig_filename="streak_finding.png",
+    )
+
+    plt.figure(figsize=(15, 15))
+    plt.imshow(img_array * (mask.astype(np.int16)), cmap="viridis", origin="upper")
+    plt.colorbar()
+    # plt.clim(0,0.5*thld)
+    plt.clim(0, 30)
+    # plt.xlim(250,2100)
+    # plt.ylim(500,2300)
+
+    for label in label_filtered_sorted:
+        plt.scatter(
+            props[label - 1].coords[:, 1], props[label - 1].coords[:, 0], s=0.5
+        )
+    plt.scatter(
+        weighted_centroid_filtered[:, 1],
+        weighted_centroid_filtered[:, 0],
+        edgecolors="r",
+        facecolors="none",
+    )
+
+    #    plt.scatter(beam_center[1],beam_center[0],marker='*',color='b')
+    #         title_Str=exp_img_file+'\nEvent: %d '%(frame_no)
+    #         plt.title(title_Str)
+    if interacting:
+        plt.show()
+    else:
+        plt.savefig(fig_filename)
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Load modules and environment
+module load exfel exfel-python
+
