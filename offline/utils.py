@@ -82,9 +82,10 @@ def plot_streaks(
         props,
         img_array,
         all_labels,
+        mask,
         interacting=False,
         fig_filename="streak_finding.png",
-    )
+    ):
 
     plt.figure(figsize=(15, 15))
     plt.imshow(img_array * (mask.astype(np.int16)), cmap="viridis", origin="upper")
