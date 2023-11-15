@@ -31,4 +31,4 @@ Put any analysis files (bigger than a few megabytes) in /scratch:
 
 
 ### powder run 40 (test data)
-![powder_r0040.h5](/tests/powder_0040.png)
+![powder_r0040.h5](/tests/powder_r0040.png)
